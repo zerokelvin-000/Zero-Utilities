@@ -1,5 +1,5 @@
 <?php
-    class DegRad{
+    trait DegRad{
         public static function deg2rad($degrees){
             return deg2rad($degrees);
         }
@@ -9,7 +9,7 @@
         }
     }
 
-    class DirectTrigonometry{
+    trait DirectTrigonometry{
         public static function sin_deg($angle){
             return sin(DegRad::deg2rad($angle));
         }
@@ -59,7 +59,7 @@
         }
     }
 
-    class InverseTrigonometry{
+    trait InverseTrigonometry{
         public static function asin_deg($angle){
             return asin(DegRad::deg2rad($angle));
         }
@@ -83,4 +83,36 @@
         public static function atan_rad($angle){
             return atan($angle);
         }
+
+        public static function arccsc_deg($angle){
+            return InverseTrigonometry::asin_deg(DegRad::deg2rad(1 / $angle));
+        }
+
+        public static function arccsc_rad($angle){
+            return InverseTrigonometry::asin_rad(1 / $angle);
+        }
+
+        public static function arcsec_deg($angle){
+            return InverseTrigonometry::acos_deg(DegRad::deg2rad(1 / $angle));
+        }
+
+        public static function arcsec_rad($angle){
+            return InverseTrigonometry::acos_rad(1 / $angle);
+        }
+
+        public static function arcot_deg($angle){
+            return InverseTrigonometry::atan_deg(DegRad::deg2rad(1 / $angle));
+        }
+
+        public static function arcot_rad($angle){
+            return InverseTrigonometry::atan_rad(1 / $angle);
+        }
     }
+
+    class Trigonometry{
+        use DegRad;
+        use DirectTrigonometry;
+        use InverseTrigonometry;
+    }
+
+    Trigonometry::arcsec_deg(28);
