@@ -109,10 +109,10 @@
         }
     }
 
-    class Trigonometry{
+    trait Trigonometry{
         use DegRad;
         use DirectTrigonometry;
         use InverseTrigonometry;
     }
 
-    Trigonometry::arcsec_deg(28);
+    echo Trigonometry::sec_rad(1.05);
