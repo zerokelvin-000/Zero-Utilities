@@ -1,5 +1,6 @@
 <?php
-    use Costants;
+    namespace ZKutils\Geometry;
+    use ZKutils\Costants\Costants;
 
     trait plainGeometry{
         public static function square_area($s){

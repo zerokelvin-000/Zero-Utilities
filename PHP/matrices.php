@@ -1,5 +1,7 @@
 <?php
-     trait Matrix{
+    namespace ZKutils\Matrix;
+
+    trait Matrix{
         public static function add(array $arrays): array{
             if(empty($arrays)){
                 return [];

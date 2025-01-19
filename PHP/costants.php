@@ -1,4 +1,6 @@
 <?php
+    namespace ZKutils\Costants;
+
     trait Costants{
         const PI = 3.141592653589793;
         const E = 2.71828182845904523536;

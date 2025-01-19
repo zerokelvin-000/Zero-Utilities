@@ -1,4 +1,6 @@
 <?php
+    namespace ZKutils\Trigonometry;
+
     trait DegRad{
         public static function deg2rad($degrees){
             return deg2rad($degrees);
@@ -114,5 +116,3 @@
         use DirectTrigonometry;
         use InverseTrigonometry;
     }
-
-    echo Trigonometry::sec_rad(1.05);

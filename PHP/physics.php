@@ -1,4 +1,6 @@
 <?php
+    namespace ZKutils\Physics;
+
     trait Physics{
         public static function final_velocity($vi, $a, $t){
             return $vi + $a * $t;
