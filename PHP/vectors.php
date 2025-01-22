@@ -4,15 +4,19 @@
     require "matrices.php";
     require "point.php";
     require "utils.php";
+    require "trigonometry.php";
 
     use ZKutils\Point\Point;
     use ZKutils\Utils\Theorems;
+    use ZKutils\Trigonometry\Trigonometry;
 
     class Vector{
         public Point $position;
 
-        public function __construct(){
+        public function __construct(float $x, float $y, float $z = null){
             $this->position = new Point;
+
+            $this->set_position($x, $y, $z);
         }
 
         public function set_position($x, $y, $z = null){
@@ -25,7 +29,7 @@
             }
 
             if($x && $y && $z){
-                // TODO: set position per 3D
+                $this->position->set_3D_point($x, $y, $z);
             }
 
             return null;
@@ -45,8 +49,25 @@
             }
             
             if($this->position->get_point_dimensions() == 2){
-                $this->set_position($this->position->x + $target->position->x, $this->position->y + $target->position->y);
+                $vector = new Vector(0,0);
+
+                $vector->set_position(
+                    $this->position->x + $target->position->x,
+                    $this->position->y + $target->position->y
+                );
             }
+            
+            if($this->position->get_point_dimensions() == 3){
+                $vector = new Vector(0,0,0);
+
+                $vector->set_position(
+                    $this->position->x + $target->position->x,
+                    $this->position->y + $target->position->y,
+                    $this->position->z + $target->position->z
+                );
+            }
+
+            return $vector;
         }
 
         public function subtract(Vector $target){
@@ -55,8 +76,25 @@
             }
             
             if($this->position->get_point_dimensions() == 2){
-                $this->set_position($this->position->x - $target->position->x, $this->position->y - $target->position->y);
+                $vector = new Vector(0,0);
+
+                $vector->set_position(
+                    $this->position->x - $target->position->x,
+                    $this->position->y - $target->position->y
+                );
             }
+            
+            if($this->position->get_point_dimensions() == 3){
+                $vector = new Vector(0,0,0);
+
+                $vector->set_position(
+                    $this->position->x - $target->position->x,
+                    $this->position->y - $target->position->y,
+                    $this->position->z - $target->position->z
+                );
+            }
+
+            return $vector;
         }
 
         public function scale($scalar){
@@ -66,10 +104,26 @@
                     $this->position->y * $scalar
                 );
             }
+
+            if($this->position->get_point_dimensions() == 3){
+                $this->position->set_3D_point(
+                    $this->position->x * $scalar,
+                    $this->position->y * $scalar,
+                    $this->position->z * $scalar
+                );
+            }
         }
 
         public function module(){
-            return Theorems::pythagoras($this->position->x, $this->position->y);
+            if($this->position->get_point_dimensions() == 2){
+                return Theorems::pythagoras($this->position->x, $this->position->y);
+            }
+
+            if($this->position->get_point_dimensions() == 3){
+                return Theorems::pythagoras($this->position->x, $this->position->y, $this->position->z);
+            }
+
+            return 0;
         }
 
         public function scalar_product(Vector $target){
@@ -83,19 +137,41 @@
                 $result += $this->position->x * $target->position->x;
                 $result += $this->position->y * $target->position->y;
             }
+            
+            if($this->position->get_point_dimensions() == 3){
+                $result += $this->position->x * $target->position->x;
+                $result += $this->position->y * $target->position->y;
+                $result += $this->position->z * $target->position->z;
+            }
 
             return $result;
         }
 
         public function print_position(){
             if($this->position->get_point_dimensions() == 2){
-                return $this->get_position()["x"]." ".$this->get_position()["y"];
+                return $this->position->x ." ". $this->position->y;
             }
+
+            if($this->position->get_point_dimensions() == 3){
+                return $this->position->x ." ". $this->position->y ." ". $this->position->z;
+            }
+        }
+
+        public function angle(Vector $second_vector){
+            $product = $this->scalar_product($second_vector);
+            $module1 = $this->module();
+            $module2 = $second_vector->module();
+
+            if($module1 == 0 || $module2 == 0){
+                return null;
+            }
+
+            $angle = Trigonometry::acos_rad($product / ($module1 * $module2));
+
+            return Trigonometry::rad2deg($angle);
         }
     }
 
-    $vector = new Vector();
-    $vector->set_position(3,4);
-    $vector1 = new Vector();
-    $vector1->set_position(4,-3);
-    echo $vector->scalar_product($vector1)."<br>";
+    $vector = new Vector(10,2);
+    $vector1 = new Vector(-4,-9);
+    echo $vector->angle($vector1);

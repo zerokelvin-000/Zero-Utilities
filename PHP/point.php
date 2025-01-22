@@ -11,6 +11,12 @@
             $this->y = $y;
         }
 
+        public function set_3D_point($x, $y, $z){
+            $this->x = $x;
+            $this->y = $y;
+            $this->z = $z;
+        }
+
         public function get_point_dimensions(){
             if(!$this->x || !$this->y){
                 return null;
@@ -37,5 +43,12 @@
             }
 
             return ["x" => null, "y" => null, "z" => null];
+        }
+
+        public function angle_to(Point $target){
+            $dx = $target->x - $this->x;
+            $dy = $target->y - $this->y;
+
+            return rad2deg(atan2($dy, $dx));
         }
     }
