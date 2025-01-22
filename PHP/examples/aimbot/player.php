@@ -1,5 +1,5 @@
 <?php
-    require "../../point.php";
+    require "../../normal/point.php";
 
     use ZKutils\Point\Point;
 
