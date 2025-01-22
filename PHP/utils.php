@@ -6,3 +6,9 @@
             return number_format($n, $decimals, ".", "");
         }
     }
+
+    trait Theorems{
+        public static function pythagoras($a, $b){
+            return sqrt($a ** 2 + $b ** 2);
+        }
+    }
