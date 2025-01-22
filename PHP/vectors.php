@@ -2,49 +2,54 @@
     namespace ZKutils\Vectors;
 
     require "matrices.php";
+    require "point.php";
 
-    use ZKutils\Matrix\Matrix;
-
-    trait Point{
-        public float $x;
-        public float $y;
-        public float $z;
-
-        public function set_2D_point($x, $y){
-            $this->x = $x;
-            $this->y = $y;
-        }
-    }
-
-    trait Vector_2D{
-        public static function create_vector($x, $y){
-            $point = new Point();
-            $point->set_2D_point($x, $y);
-        }
-
-        public static function scale_vector(Point $original_point, $scalar){
-            return new Point($original_point->x * $scalar, $original_point->y * $scalar);
-        }
-
-        public static function add_vectors(Point $point1, Point $point2){
-            return new Point($point1->posx + $point2->posx, $point1->posy + $point2->posy);
-        }
-
-        public static function subtract_vectors(Point $point1, Point $point2){
-            return new Point($point1->posx - $point2->posx, $point1->posy - $point2->posy);
-        }
-
-        public static function vector_dot_product(Point $point1, Point $point2){
-            return new Point();
-        }
-    }
+    use ZKutils\Point\Point;
 
     class Vector{
-        use Vector_2D;
-
         public Point $position;
 
-        public function set_position($x, $y){
-            $this->position = new Point($x, $y);
+        public function __construct(){
+            $this->position = new Point;
+        }
+
+        public function set_position($x, $y, $z = null){
+            if(!$x || !$y){
+                return null;
+            }
+
+            if($x && $y && !$z){
+                $this->position->set_2D_point($x, $y);
+            }
+
+            if($x && $y && $z){
+                // TODO
+            }
+
+            return null;
+        }
+
+        public function get_position(){
+            return $this->position->get_position();
+        }
+
+        public function scale($scalar){
+            if($this->position->get_point_dimensions() == 2){
+                $this->position->set_2D_point(
+                    $this->position->x * $scalar,
+                    $this->position->y * $scalar
+                );
+            }
+        }
+
+        public function print_position(){
+            if($this->position->get_point_dimensions() == 2){
+                return $this->get_position()["x"]." ".$this->get_position()["y"];
+            }
         }
     }
+
+    $vector = new Vector();
+    $vector->set_position(2,6);
+    $vector->scale(3);
+    echo $vector->print_position();
