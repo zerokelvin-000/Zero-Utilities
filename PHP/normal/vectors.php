@@ -172,6 +172,41 @@
         }
     }
 
-    $vector = new Vector(10,2);
-    $vector1 = new Vector(-4,-9);
-    echo $vector->angle($vector1);
+    class Vector_custom{
+        public array $vector;
+
+        public function __construct(array $vector){
+            $this->vector = $vector;
+        }
+
+        public function dot_product(Vector_custom $vector2){
+            $sum = 0;
+
+            for($i=0; $i<count($this->vector); $i++){
+                $sum += $this->vector[$i] * $vector2->vector[$i];
+            }
+
+            return $sum;
+        }
+
+        public function normalize_vector(){
+            $sum = 0;
+
+            foreach($this->vector as $val){
+                $sum += pow($val, 2);
+            }
+
+            return sqrt($sum);
+        }
+
+        public function similarity($vector2){
+            $dot = $this->dot_product($vector2);
+            $norms = [$this->normalize_vector(), $vector2->normalize_vector()];
+
+            if($norms[0] == 0 || $norms[1] == 0){
+                return 0;
+            }
+
+            return $dot/($norms[0]*$norms[1]);
+        }
+    }

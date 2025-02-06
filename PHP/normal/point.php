@@ -1,6 +1,5 @@
 <?php
     namespace ZKutils\Point;
-
     class Point{
         public $x;
         public $y;
