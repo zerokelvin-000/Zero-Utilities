@@ -73,6 +73,24 @@
 
             return $output;
         }
+
+        public static function scramble(array $array) {
+            $count = count($array);
+        
+            for($i = $count - 1; $i > 0; $i--){  
+                $j = rand(0, $i);
+                [$array[$i], $array[$j]] = [$array[$j], $array[$i]];
+            }
+        
+            return $array;
+        }
+
+        public static function concatenate(array ...$arrays){
+            return array_merge($arrays);
+        }
     }
 
-    echo json_encode(zarray::arange(0, 10, .1), JSON_PRETTY_PRINT)."<br>";
+    echo json_encode(
+        zarray::concatenate([1,2,3,4], [3,6,1])
+        , JSON_PRETTY_PRINT
+    )."<br>";
